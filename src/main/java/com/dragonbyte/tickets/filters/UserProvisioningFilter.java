@@ -1,7 +1,7 @@
 package com.dragonbyte.tickets.filters;
 
 
-import com.dragonbyte.tickets.domain.User;
+import com.dragonbyte.tickets.domain.entities.User;
 import com.dragonbyte.tickets.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,4 +1,4 @@
-package com.dragonbyte.tickets.domain;
+package com.dragonbyte.tickets.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
