@@ -2,10 +2,9 @@ package com.dragonbyte.tickets.mappers;
 
 import com.dragonbyte.tickets.domain.CreateEventRequest;
 import com.dragonbyte.tickets.domain.CreateTicketTypeRequest;
-import com.dragonbyte.tickets.domain.dtos.CreateEventRequestDto;
-import com.dragonbyte.tickets.domain.dtos.CreateEventResponseDto;
-import com.dragonbyte.tickets.domain.dtos.CreateTicketTypeRequestDto;
+import com.dragonbyte.tickets.domain.dtos.*;
 import com.dragonbyte.tickets.domain.entities.Event;
+import com.dragonbyte.tickets.domain.entities.TicketType;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -14,7 +13,16 @@ public interface EventMapper {
 
     CreateTicketTypeRequest fromDto(CreateTicketTypeRequestDto dto);
 
-     CreateEventRequest fromDto(CreateEventRequestDto dto);
+    CreateEventRequest fromDto(CreateEventRequestDto dto);
 
-     CreateEventResponseDto toDto(Event event);
+    CreateEventResponseDto toDto(Event event);
+
+    ListEventTicketTypeResponseDto toListEventTicketTypeResponseDtoDto(TicketType ticketType);
+
+    ListEventResponseDto toListEventResponseDto(Event event);
+
+    GetEventDetailsTicketTypesResponseDto toGetEventDetailsTicketTypeResponseDto(TicketType ticketType);
+
+    GetEventDetailsResponseDto toGetEventDetailsResponseDto(Event event);
+
 }
