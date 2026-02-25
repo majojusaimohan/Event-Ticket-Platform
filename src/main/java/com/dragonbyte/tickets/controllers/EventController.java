@@ -1,10 +1,8 @@
 package com.dragonbyte.tickets.controllers;
 
 import com.dragonbyte.tickets.domain.CreateEventRequest;
-import com.dragonbyte.tickets.domain.dtos.CreateEventRequestDto;
-import com.dragonbyte.tickets.domain.dtos.CreateEventResponseDto;
-import com.dragonbyte.tickets.domain.dtos.GetEventDetailsResponseDto;
-import com.dragonbyte.tickets.domain.dtos.ListEventResponseDto;
+import com.dragonbyte.tickets.domain.UpdateEventRequest;
+import com.dragonbyte.tickets.domain.dtos.*;
 import com.dragonbyte.tickets.domain.entities.Event;
 import com.dragonbyte.tickets.mappers.EventMapper;
 import com.dragonbyte.tickets.services.EventService;
@@ -18,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.PublicKey;
 import java.util.UUID;
 
 @RestController
@@ -30,7 +27,7 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public ResponseEntity<CreateEventResponseDto> creteEvent(
+    public ResponseEntity<CreateEventResponseDto> createEvent(
             @AuthenticationPrincipal Jwt jwt,
            @Valid @RequestBody CreateEventRequestDto createEventRequestDto
             ){
@@ -62,6 +59,20 @@ public class EventController {
                 .orElse(ResponseEntity.notFound().build());
 
     }
+
+    @PutMapping(path="/{eventId}")
+    public ResponseEntity<UpdateEventResponseDto> updateEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId,
+            @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto
+    ){
+        UpdateEventRequest updateEventRequest = eventMapper.fromDto(updateEventRequestDto);
+        UUID userID = parseUserId(jwt);
+        Event updatedEvent = eventService.updateEventForOrganizer(userID, eventId, updateEventRequest);
+        UpdateEventResponseDto updateEventResponseDto = eventMapper.toUpdateEventResponseDto(updatedEvent);
+        return  new ResponseEntity<>(updateEventResponseDto, HttpStatus.CREATED);
+    }
+
 
     private UUID parseUserId(Jwt jwt){
         return UUID.fromString(jwt.getSubject());
