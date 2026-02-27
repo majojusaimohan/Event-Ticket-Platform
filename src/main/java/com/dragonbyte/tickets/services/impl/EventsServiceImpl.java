@@ -4,6 +4,7 @@ import com.dragonbyte.tickets.domain.CreateEventRequest;
 import com.dragonbyte.tickets.domain.UpdateEventRequest;
 import com.dragonbyte.tickets.domain.UpdateTicketTypeRequest;
 import com.dragonbyte.tickets.domain.entities.Event;
+import com.dragonbyte.tickets.domain.entities.EventStatusEnum;
 import com.dragonbyte.tickets.domain.entities.TicketType;
 import com.dragonbyte.tickets.domain.entities.User;
 import com.dragonbyte.tickets.exceptions.EventNotFoundException;
@@ -130,5 +131,22 @@ public class EventsServiceImpl implements EventService {
         }
 
     return  eventRepository.save(existingEvent);
+    }
+
+    @Override
+    @Transactional
+    public void deleteEventForOrganizer(UUID organizerId, UUID eventId) {
+        getEventForOrganizer(organizerId,eventId).ifPresent(eventRepository::delete);
+
+    }
+
+    @Override
+    public Page<Event> listPublishedEvents(Pageable pageable) {
+       return eventRepository.findByStatus(EventStatusEnum.PUBLISHED,pageable);
+    }
+
+    @Override
+    public Page<Event> searchPublishedEvents(String query, Pageable pageable) {
+       return eventRepository.searchEvents(query,pageable);
     }
 }
