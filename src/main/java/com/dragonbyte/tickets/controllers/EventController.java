@@ -6,6 +6,7 @@ import com.dragonbyte.tickets.domain.dtos.*;
 import com.dragonbyte.tickets.domain.entities.Event;
 import com.dragonbyte.tickets.mappers.EventMapper;
 import com.dragonbyte.tickets.services.EventService;
+import com.dragonbyte.tickets.util.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+
+import static com.dragonbyte.tickets.util.JwtUtil.parseUserId;
 
 @RestController
 @RequestMapping(path = "/api/v1/events")
@@ -85,8 +88,6 @@ public class EventController {
     }
 
 
-    private UUID parseUserId(Jwt jwt){
-        return UUID.fromString(jwt.getSubject());
-    }
+
 
 }
